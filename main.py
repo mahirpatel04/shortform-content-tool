@@ -1,4 +1,8 @@
 from functions import downloadVideo, createTTS, edit
+from moviepy.editor import *
+from moviepy.video.tools.subtitles import SubtitlesClip
+from datetime import timedelta
+
 #----------------------------------------------------------
 #                   MAIN DRIVER PROGRAM
 #   Pick type of video, pick assests, generate video

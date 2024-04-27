@@ -27,8 +27,7 @@ def downloadVideo(link, fileName):
             key = i
     videoStreams[key].download(filename=fileName)
     return max
-        
-    
+  
 def setVideoResolution(originalRes):
     """
     Returns the width and height of the final video 
@@ -64,7 +63,6 @@ def createTTS(fileNameInput, fileNameOutput, voice="en_us_006"):
     
     tts(text, voice, fileNameOutput)
     
-
 def edit(audioFileName, backgroundFileName, originalRes, outputFileName):
     """
     Stitches together the audio and bg video after cropping
@@ -99,3 +97,4 @@ def edit(audioFileName, backgroundFileName, originalRes, outputFileName):
     vid.write_videofile(outputFileName)
     
     return
+
