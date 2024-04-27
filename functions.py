@@ -49,7 +49,7 @@ def setVideoResolution(originalRes):
     
     """
     return (originalRes * 9 / 16), originalRes
-
+w, h = setVideoResolution(720)
 # STEP 2: Create mp3 file of the text
 
 def createTTS(fileNameInput, voice, fileNameOutput):
@@ -62,22 +62,23 @@ def createTTS(fileNameInput, voice, fileNameOutput):
     tts(text, voice, fileNameOutput)
     
 
-'''
-# STEP 3: Figure out how long the tts is
-ttsClip = AudioFileClip("output.mp3")
-duration = ttsClip.duration
-# STEP 4: Create a short version of the video clip that matches
-#         the length of the audio
+def edit(audioFileName, backgroundFileName, width, height, outputFileName):
+    
+    # Figure out how long the audio is
+    ttsClip = AudioFileClip(audioFileName)
+    duration = ttsClip.duration
+    # Create a short version of the video to match the audio
+    vid = VideoFileClip(backgroundFileName)
+    vid = vid.set_duration(duration)
 
-vid = VideoFileClip("bottom.mp4")
-newVid = vid.set_duration(duration)
+    # Edit video to fit into tiktok screen
+    x1 = ((height * 16)/9 - width)/2
+    vid = vfx.crop(vid, x1=x1, y1=0, width=width, height=height)
 
-# STEP 5: Edit video to fit into tiktok screen
+    # STEP 6: Put the tts onto the video
+    vid = vid.set_audio(ttsClip)
+    vid.write_videofile(outputFileName)
 
-newVid = vfx.crop(newVid, x1=437.5,y1=0, width=405, height=720)
+    # TESTING
 
-# STEP 6: Put the tts onto the video
-newVid = newVid.set_audio(ttsClip)
-newVid.write_videofile("movie.mp4")
-
-# TESTING'''
+edit("output.mp3", "bottom.mp4", w, h, "test.mp4")
