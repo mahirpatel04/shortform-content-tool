@@ -1,8 +1,22 @@
+from typing import Any
 from pytube import YouTube
 from moviepy.editor import *
 from tiktokvoice import tts
 import os.path
 
+class File:
+    def __init__(self, fileName):
+        self.fileName = fileName
+
+class Video(File):
+    def __init__(self, fileName, res):
+        super().__init__(fileName)
+        self.res = res
+
+class Audio(File):
+    def __init__(self, fileName):
+        super().__init__(fileName)
+        
 def downloadVideo(link, fileName):
     """
     Given youtube link, download video as specified filename and return resolution
@@ -14,6 +28,9 @@ def downloadVideo(link, fileName):
     Return:
         resolution of video: int
     """
+    if os.path.exists(fileName):
+        raise FileExistsError("File Already Downloaded")
+    
     yt = YouTube(link)
     videoStreams = yt.streams.filter(adaptive=True, file_extension="mp4", type="video")
     max = int(videoStreams[0].resolution[:-1:])
@@ -21,12 +38,13 @@ def downloadVideo(link, fileName):
     for i in range(len(videoStreams)):
         if int(videoStreams[i].resolution[:-1:]) == 1080:
             videoStreams[i].download(filename=fileName)
-            return 1080
+            return Video(fileName, 1080)
         elif int(videoStreams[i].resolution[:-1:]) > max:
             max = videoStreams[i].resolution[:-1:]
             key = i
     videoStreams[key].download(filename=fileName)
-    return max
+    
+    return Video(fileName, max)
   
 def setVideoResolution(originalRes):
     """
@@ -55,28 +73,37 @@ def createTTS(fileNameInput, fileNameOutput, voice="en_us_006"):
     Return:
         None
     """
-    if os.path.isfile("./" + fileNameInput):
+    if os.path.exists(fileNameOutput):
+        raise FileExistsError("File Already Downloaded")
+    
+    if os.path.exists(fileNameInput):
         file = open(fileNameInput, "r")
         text = file.read()
     else:
-        raise Exception("Script file not found in current directory")
+        raise FileNotFoundError("Script file not found in current directory")
     
     tts(text, voice, fileNameOutput)
     
-def edit(audioFileName, backgroundFileName, originalRes, outputFileName):
+    file.close()
+    print("Resources Closed")
+    
+    return Audio(fileNameOutput)
+    
+def createBaseVideo(audioFileName, backgroundFileName, outputFileName, originalRes=720):
     """
     Stitches together the audio and bg video after cropping
     
     Args:
         audioFileName: file name for the TTS mp3 (str)
         backgroundFileName: file name for the background mp4 (str)
-        originalRes: originalResolution of the bg video (int)
         outputFileName: video will be stored with this name (str)
+        originalRes: originalResolution of the bg video, defaults to 720p (int)
     
     Return:
         None
     """
-    
+    if os.path.exists(outputFileName):
+        raise FileExistsError("Output already exists")
     # Set width and height of the video
     width, height = setVideoResolution(originalRes)
     
@@ -96,5 +123,10 @@ def edit(audioFileName, backgroundFileName, originalRes, outputFileName):
     vid = vid.set_audio(ttsClip)
     vid.write_videofile(outputFileName)
     
+    ttsClip.close()
+    vid.close()
+    print("Resources Closed")
     return
 
+def addCaptions():
+    pass
