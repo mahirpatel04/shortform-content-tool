@@ -14,8 +14,8 @@ def downloadVideo(link, fileName):
     Given youtube link, download video as specified filename and return resolution
 
     Args:
-        link : str
-        fileName: str
+        link : link to download (str)
+        fileName: name to store the download as (str)
         
     Return:
         resolution of video: int
@@ -35,15 +35,17 @@ def downloadVideo(link, fileName):
     return max
         
     
-
-        
+def setVideoResolution(originalRes):
+    """
+    Args:
+        originalRes: resolution of the original video (int)
     
-'''
-# STEP 2: Do the resolution calculations (used later for cropping)
-resolution = videoStream.resolution
-if (resolution == "720p"):
-    newX = 607.5
-    newY = 1080
+    Return:
+        width: width of final video
+        height: height of the final video
+    
+    """
+    return (originalRes * 9 / 16), originalRes
 
 # STEP 2: Create mp3 file of the text
 text = "I (30M) have been seeing a woman (30F) for two months. We go out twice a week and I’ve noticed I’m always the one paying for dates (despite her insistence that she wants to be “equals” in a relationship). Last week we finally had sex and agreed to be official.Fast forward to last night: I took her out to dinner and when the bill came I asked if she’d be open to splitting it since we were serious now. She hesitantly took out her purse and paid her half. She was relatively quiet the rest of the evening and since I sensed something was off I didn’t push for intimacy. This morning I received a text from her saying, “Now that you got what you wanted I see your true colors.” I replied, “If you’re referring to splitting the bill, I felt it was only fair as we’re serious now. If you rather we take turns paying, that’s also fine with me. It doesn’t have to be exactly 50/50 but we make a similar income and I prefer a partnership of equals.” FWIW, we both make around $200K/yr. She said she couldn’t believe me and accused me of “tricking” her, saying I “used” her for sex and wasn’t a good person. I feel she overreacted to a reasonable request. Am I wrong to end things?"
