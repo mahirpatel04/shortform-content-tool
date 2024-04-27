@@ -9,20 +9,30 @@ videoStreams = yt.streams.filter(adaptive=True, file_extension="mp4", type="vide
 
 # videoStreams.download(filename="bottom.mp4")
 
-def downloadVideo(link):
+def downloadVideo(link, fileName):
+    """
+    Given youtube link, download video as specified filename and return resolution
+
+    Args:
+        link : str
+        fileName: str
+        
+    Return:
+        resolution of video: int
+    """
     yt = YouTube(link)
     videoStreams = yt.streams.filter(adaptive=True, file_extension="mp4", type="video")
     max = int(videoStreams[0].resolution[:-1:])
     key = 0
     for i in range(len(videoStreams)):
         if int(videoStreams[i].resolution[:-1:]) == 1080:
-            videoStreams[i].download(filename="bottom.mp4")
-            return
+            videoStreams[i].download(filename=fileName)
+            return 1080
         elif int(videoStreams[i].resolution[:-1:]) > max:
             max = videoStreams[i].resolution[:-1:]
             key = i
-    videoStreams[key].download(filename="bottom.mp4")
-    return
+    videoStreams[key].download(filename=fileName)
+    return max
         
     
 
