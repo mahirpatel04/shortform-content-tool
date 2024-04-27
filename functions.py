@@ -2,12 +2,6 @@ from pytube import YouTube
 from moviepy.editor import *
 from tiktokvoice import tts
 import os.path
-# STEP 1: Download the minecraft parkour video
-newlink = "https://www.youtube.com/watch?v=952ILTHDgC4"
-yt = YouTube(newlink)
-videoStreams = yt.streams.filter(adaptive=True, file_extension="mp4", type="video")[0]
-
-# videoStreams.download(filename="bottom.mp4")
 
 def downloadVideo(link, fileName):
     """
@@ -49,10 +43,19 @@ def setVideoResolution(originalRes):
     
     """
     return (originalRes * 9 / 16), originalRes
-w, h = setVideoResolution(720)
-# STEP 2: Create mp3 file of the text
 
-def createTTS(fileNameInput, voice, fileNameOutput):
+def createTTS(fileNameInput, fileNameOutput, voice="en_us_006"):
+    """
+    Creates the TTS mp3 file
+    
+    Args:
+        fileNameInput: name of the text file to read from (str)
+        voice: the voice of the reader (str)
+        fileNameOutput: mp3 file will be saved as this (str)
+    
+    Return:
+        None
+    """
     if os.path.isfile("./" + fileNameInput):
         file = open(fileNameInput, "r")
         text = file.read()
@@ -62,11 +65,27 @@ def createTTS(fileNameInput, voice, fileNameOutput):
     tts(text, voice, fileNameOutput)
     
 
-def edit(audioFileName, backgroundFileName, width, height, outputFileName):
+def edit(audioFileName, backgroundFileName, originalRes, outputFileName):
+    """
+    Stitches together the audio and bg video after cropping
+    
+    Args:
+        audioFileName: file name for the TTS mp3 (str)
+        backgroundFileName: file name for the background mp4 (str)
+        originalRes: originalResolution of the bg video (int)
+        outputFileName: video will be stored with this name (str)
+    
+    Return:
+        None
+    """
+    
+    # Set width and height of the video
+    width, height = setVideoResolution(originalRes)
     
     # Figure out how long the audio is
     ttsClip = AudioFileClip(audioFileName)
     duration = ttsClip.duration
+    
     # Create a short version of the video to match the audio
     vid = VideoFileClip(backgroundFileName)
     vid = vid.set_duration(duration)
@@ -75,10 +94,8 @@ def edit(audioFileName, backgroundFileName, width, height, outputFileName):
     x1 = ((height * 16)/9 - width)/2
     vid = vfx.crop(vid, x1=x1, y1=0, width=width, height=height)
 
-    # STEP 6: Put the tts onto the video
+    # Put the tts onto the video
     vid = vid.set_audio(ttsClip)
     vid.write_videofile(outputFileName)
-
-    # TESTING
-
-edit("output.mp3", "bottom.mp4", w, h, "test.mp4")
+    
+    return
