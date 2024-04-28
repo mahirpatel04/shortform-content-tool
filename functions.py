@@ -1,4 +1,3 @@
-from typing import Any
 from pytube import YouTube
 from moviepy.editor import *
 from tiktokvoice import tts
