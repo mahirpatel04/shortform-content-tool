@@ -127,6 +127,3 @@ def createBaseVideo(audioFileName, backgroundFileName, outputFileName, originalR
     vid.close()
     print("Resources Closed")
     return
-
-def addCaptions():
-    pass
