@@ -108,6 +108,7 @@ def createBaseVideo(audioFileName, backgroundFileName, outputFileName, originalR
     
     # Figure out how long the audio is
     ttsClip = AudioFileClip(audioFileName)
+    ttsClip.write_audiofile("test.wav")
     duration = ttsClip.duration
     
     # Create a short version of the video to match the audio
@@ -120,7 +121,7 @@ def createBaseVideo(audioFileName, backgroundFileName, outputFileName, originalR
 
     # Put the tts onto the video
     vid = vid.set_audio(ttsClip)
-    vid.write_videofile(outputFileName)
+    vid.write_videofile(outputFileName, audio_codec='aac')
     
     ttsClip.close()
     vid.close()
