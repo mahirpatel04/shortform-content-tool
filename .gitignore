@@ -1,8 +1,6 @@
-bottom.mp4
+test.mp3
+test.mp4
+testOutput.mp4
 ffmpeg
-movie.mp4
 output.mp3
-script.py
-test.py
-output/
-sources/
+test.txt
