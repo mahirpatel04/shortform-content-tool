@@ -28,19 +28,11 @@ class Video(File):
             raise FileExistsError("File Already Downloaded")
         
         yt = YouTube(link)
-        videoStreams = yt.streams.filter(adaptive=True, file_extension="mp4", type="video")
-        max = int(videoStreams[0].resolution[:-1:])
-        key = 0
-        for i in range(len(videoStreams)):
-            if int(videoStreams[i].resolution[:-1:]) == 1080:
-                videoStreams[i].download(filename=outputFileName)
-                return Video(outputFileName, 1080)
-            elif int(videoStreams[i].resolution[:-1:]) > max:
-                max = videoStreams[i].resolution[:-1:]
-                key = i
-        videoStreams[key].download(filename=outputFileName)
+        videoStream = yt.streams.get_highest_resolution()
+        res = int(videoStream.resolution[:-1:])
+        videoStream.download(filename=outputFileName)
         
-        return Video(outputFileName, max)
+        return Video(outputFileName, res)
     
     @classmethod
     def combinedProcessing(self, fileName, bgVidLink, scriptFileName):

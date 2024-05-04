@@ -1,7 +1,4 @@
 from functions import Video
-from moviepy.editor import *
-from moviepy.video.tools.subtitles import SubtitlesClip
-
 
 #----------------------------------------------------------
 #                   MAIN DRIVER PROGRAM
@@ -9,8 +6,10 @@ from moviepy.video.tools.subtitles import SubtitlesClip
 #
 #----------------------------------------------------------
 
-link = "https://youtu.be/R0b-VFV8SJ8?si=cyGGY7xjDvNugDZs"
+link = "https://www.youtube.com/watch?v=HRt7QaPWEZc"
 ttsFile = "sources/test.txt"
 outputFile = "output/final.mp4"
 
 vid = Video.combinedProcessing(outputFile, link, ttsFile)
+
+
