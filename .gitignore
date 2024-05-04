@@ -4,3 +4,4 @@ testOutput.mp4
 ffmpeg
 output.mp3
 test.txt
+__pycache__/

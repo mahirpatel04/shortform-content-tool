@@ -9,26 +9,26 @@ from moviepy.video.tools.subtitles import SubtitlesClip
 #
 #----------------------------------------------------------
 
-link = "https://www.youtube.com/watch?v=952ILTHDgC4"
-ttsFile = "test.txt"
+link = "https://youtu.be/R0b-VFV8SJ8?si=cyGGY7xjDvNugDZs"
+ttsFile = "sources/test.txt"
 
 # Check if background video is already downloaded or not
 try:
-    vid = downloadVideo(link, "test.mp4")
+    vid = downloadVideo(link, "output/test.mp4")
 except FileExistsError:
     print("Vid already existed, so did not re-download")
-    vid = Video("test.mp4", 720)
+    vid = Video("output/test.mp4", 720)
 
 # Check if TTS is already created or not
 try:
-    tts = createTTS(ttsFile, "test.mp3")
+    tts = createTTS(ttsFile, "output/test.mp3")
 except FileExistsError:
     print("TTS already existed, so did not re-download")
-    tts = Audio(ttsFile)
+    tts = Audio("output/test.mp3")
 
 
 # Check if Base Video is already created or not
 try:
-    createBaseVideo(tts.fileName, vid.fileName, "testOutput.mp4", vid.res)
+    createBaseVideo("output/test.mp3", "output/test.mp4", "output/testOutput.mp4", vid.res)
 except FileExistsError:
     print("Final video already exists, new one NOT CREATED")
