@@ -6,3 +6,5 @@ output.mp3
 test.txt
 __pycache__/
 front.py
+output/
+sources/
